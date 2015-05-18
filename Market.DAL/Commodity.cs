@@ -17,11 +17,11 @@ namespace Market.DAL
         public Commodity()
         {
             this.Feedbacks = new HashSet<Feedback>();
-            this.OrderCommodityDetails = new HashSet<CommodityInOrderDetail>();
             this.UserProfileCommoditys = new HashSet<UserProfileCommodity>();
             this.CommodityInShoppingTrolleys = new HashSet<CommodityInShoppingTrolley>();
             this.CommodityInFavorites = new HashSet<CommodityInFavorite>();
             this.CommodityInfos = new HashSet<CommodityInfo>();
+            this.CommodityInOrders = new HashSet<CommodityInOrder>();
         }
     
         public int CommodityId { get; set; }
@@ -50,10 +50,10 @@ namespace Market.DAL
         public virtual SubCategory SubCategory { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<CommodityInOrderDetail> OrderCommodityDetails { get; set; }
         public virtual ICollection<UserProfileCommodity> UserProfileCommoditys { get; set; }
         public virtual ICollection<CommodityInShoppingTrolley> CommodityInShoppingTrolleys { get; set; }
         public virtual ICollection<CommodityInFavorite> CommodityInFavorites { get; set; }
         public virtual ICollection<CommodityInfo> CommodityInfos { get; set; }
+        public virtual ICollection<CommodityInOrder> CommodityInOrders { get; set; }
     }
 }

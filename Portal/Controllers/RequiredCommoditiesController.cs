@@ -36,7 +36,7 @@ namespace Portal.Controllers
             var commodityName = formcollection["CommodityName"].ToString();
             var price = formcollection["Price"].ToString();
             var unitPrice = 0;
-            if (price != null)
+            if (string.IsNullOrEmpty(price))
             {
                 unitPrice = Convert.ToInt32(price);
             }

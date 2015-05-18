@@ -12,10 +12,10 @@ namespace Market.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class CommodityInOrderDetail
+    public partial class CommodityInOrder
     {
-        public int OrderId { get; set; }
         public int CommodityId { get; set; }
+        public int OrderId { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<int> Quantity { get; set; }
         public string Color { get; set; }
@@ -23,6 +23,6 @@ namespace Market.DAL
         public string Capacity { get; set; }
     
         public virtual Commodity Commodity { get; set; }
-        public virtual OrderDetail OrderDetail { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

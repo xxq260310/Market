@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/15/2015 17:50:14
+-- Date Created: 05/18/2015 20:44:48
 -- Generated from EDMX file: G:\毕业设计\Market\Market.DAL\MarketModel.edmx
 -- --------------------------------------------------
 
@@ -41,15 +41,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RequiredCommodityUserProfile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RequiredCommodities] DROP CONSTRAINT [FK_RequiredCommodityUserProfile];
 GO
-IF OBJECT_ID(N'[dbo].[FK_CommodityOrderCommodityDetail]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_CommodityOrderCommodityDetail];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OrderDetailOrderCommodityDetail]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_OrderDetailOrderCommodityDetail];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OrderOrderDetail]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[OrderDetails] DROP CONSTRAINT [FK_OrderOrderDetail];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserProfileUserProfileCommodity]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserProfileCommodities] DROP CONSTRAINT [FK_UserProfileUserProfileCommodity];
 GO
@@ -76,6 +67,15 @@ IF OBJECT_ID(N'[dbo].[FK_UserProfileFavorite]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_CommodityInfoCommodity]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CommodityInfoes] DROP CONSTRAINT [FK_CommodityInfoCommodity];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfileOrder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Orders] DROP CONSTRAINT [FK_UserProfileOrder];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CommodityInOrderCommodity]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_CommodityInOrderCommodity];
+GO
+IF OBJECT_ID(N'[dbo].[FK_OrderCommodityInOrder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_OrderCommodityInOrder];
 GO
 
 -- --------------------------------------------------
@@ -120,9 +120,6 @@ IF OBJECT_ID(N'[dbo].[SiteFeedbacks]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Feedbacks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Feedbacks];
-GO
-IF OBJECT_ID(N'[dbo].[OrderDetails]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[OrderDetails];
 GO
 IF OBJECT_ID(N'[dbo].[CommodityInOrderDetails]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CommodityInOrderDetails];
@@ -207,14 +204,14 @@ GO
 -- Creating table 'Orders'
 CREATE TABLE [dbo].[Orders] (
     [OrderId] int IDENTITY(1,1) NOT NULL,
-    [BuyerId] int  NULL,
+    [UserId] int  NOT NULL,
+    [SellerId] int  NULL,
     [Contact] char(11)  NULL,
     [TotalCost] float  NULL,
     [Address] varchar(50)  NULL,
     [State] varchar(20)  NULL,
     [Delivery] varchar(20)  NULL,
     [ConsigneeName] varchar(10)  NULL,
-    [SellerId] int  NULL,
     [CreationDate] datetime  NULL,
     [UpdateDate] datetime  NULL
 );
@@ -261,7 +258,7 @@ CREATE TABLE [dbo].[RequiredCommodities] (
     [Content] varchar(4000)  NULL,
     [CreationDate] datetime  NULL,
     [UpdateDate] datetime  NULL,
-    [CommodityName] nvarchar(30)  NULL,
+    [CommodityName] varchar(30)  NULL,
     [Price] float  NULL
 );
 GO
@@ -298,19 +295,15 @@ CREATE TABLE [dbo].[Feedbacks] (
 );
 GO
 
--- Creating table 'OrderDetails'
-CREATE TABLE [dbo].[OrderDetails] (
-    [OrderId] int IDENTITY(1,1) NOT NULL,
-    [Cost] float  NULL
-);
-GO
-
--- Creating table 'CommodityInOrderDetails'
-CREATE TABLE [dbo].[CommodityInOrderDetails] (
-    [OrderId] int  NOT NULL,
+-- Creating table 'CommodityInOrders'
+CREATE TABLE [dbo].[CommodityInOrders] (
     [CommodityId] int  NOT NULL,
+    [OrderId] int  NOT NULL,
     [UnitPrice] float  NULL,
-    [Quantity] int  NULL
+    [Quantity] int  NULL,
+    [Color] varchar(10)  NULL,
+    [Size] varchar(10)  NOT NULL,
+    [Capacity] varchar(10)  NOT NULL
 );
 GO
 
@@ -435,15 +428,9 @@ ADD CONSTRAINT [PK_Feedbacks]
     PRIMARY KEY CLUSTERED ([FeedbackId] ASC);
 GO
 
--- Creating primary key on [OrderId] in table 'OrderDetails'
-ALTER TABLE [dbo].[OrderDetails]
-ADD CONSTRAINT [PK_OrderDetails]
-    PRIMARY KEY CLUSTERED ([OrderId] ASC);
-GO
-
--- Creating primary key on [CommodityId], [OrderId] in table 'CommodityInOrderDetails'
-ALTER TABLE [dbo].[CommodityInOrderDetails]
-ADD CONSTRAINT [PK_CommodityInOrderDetails]
+-- Creating primary key on [CommodityId], [OrderId] in table 'CommodityInOrders'
+ALTER TABLE [dbo].[CommodityInOrders]
+ADD CONSTRAINT [PK_CommodityInOrders]
     PRIMARY KEY CLUSTERED ([CommodityId], [OrderId] ASC);
 GO
 
@@ -595,39 +582,6 @@ ON [dbo].[RequiredCommodities]
     ([UserId]);
 GO
 
--- Creating foreign key on [CommodityId] in table 'CommodityInOrderDetails'
-ALTER TABLE [dbo].[CommodityInOrderDetails]
-ADD CONSTRAINT [FK_CommodityOrderCommodityDetail]
-    FOREIGN KEY ([CommodityId])
-    REFERENCES [dbo].[Commodities]
-        ([CommodityId])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [OrderId] in table 'CommodityInOrderDetails'
-ALTER TABLE [dbo].[CommodityInOrderDetails]
-ADD CONSTRAINT [FK_OrderDetailOrderCommodityDetail]
-    FOREIGN KEY ([OrderId])
-    REFERENCES [dbo].[OrderDetails]
-        ([OrderId])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_OrderDetailOrderCommodityDetail'
-CREATE INDEX [IX_FK_OrderDetailOrderCommodityDetail]
-ON [dbo].[CommodityInOrderDetails]
-    ([OrderId]);
-GO
-
--- Creating foreign key on [OrderId] in table 'OrderDetails'
-ALTER TABLE [dbo].[OrderDetails]
-ADD CONSTRAINT [FK_OrderOrderDetail]
-    FOREIGN KEY ([OrderId])
-    REFERENCES [dbo].[Orders]
-        ([OrderId])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [UserId] in table 'UserProfileCommodities'
 ALTER TABLE [dbo].[UserProfileCommodities]
 ADD CONSTRAINT [FK_UserProfileUserProfileCommodity]
@@ -731,6 +685,45 @@ GO
 CREATE INDEX [IX_FK_CommodityInfoCommodity]
 ON [dbo].[CommodityInfoes]
     ([CommodityId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'Orders'
+ALTER TABLE [dbo].[Orders]
+ADD CONSTRAINT [FK_UserProfileOrder]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserProfiles]
+        ([UserId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileOrder'
+CREATE INDEX [IX_FK_UserProfileOrder]
+ON [dbo].[Orders]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [CommodityId] in table 'CommodityInOrders'
+ALTER TABLE [dbo].[CommodityInOrders]
+ADD CONSTRAINT [FK_CommodityInOrderCommodity]
+    FOREIGN KEY ([CommodityId])
+    REFERENCES [dbo].[Commodities]
+        ([CommodityId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [OrderId] in table 'CommodityInOrders'
+ALTER TABLE [dbo].[CommodityInOrders]
+ADD CONSTRAINT [FK_OrderCommodityInOrder]
+    FOREIGN KEY ([OrderId])
+    REFERENCES [dbo].[Orders]
+        ([OrderId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_OrderCommodityInOrder'
+CREATE INDEX [IX_FK_OrderCommodityInOrder]
+ON [dbo].[CommodityInOrders]
+    ([OrderId]);
 GO
 
 -- --------------------------------------------------

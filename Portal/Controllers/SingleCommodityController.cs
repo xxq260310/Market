@@ -241,16 +241,21 @@ namespace Portal.Controllers
                 };
                 this.db.ShoppingTrolleys.Add(shoppingTrolley);
             }
-           
-            CommodityInShoppingTrolley model = new CommodityInShoppingTrolley();
-            model.CommodityId = id.Value;
-            model.UnitPrice = Convert.ToInt32(price);
-            model.Size = size;
-            model.Capacity = capacity;
-            model.Color = color;
-            model.UserId = userId;
-            model.Quantity = quantity;
-            this.db.CommodityInShoppingTrolleys.Add(model);
+
+            var q = this.db.CommodityInShoppingTrolleys.SingleOrDefault(e => e.UserId == userId && e.CommodityId == id);
+            if (q == null)
+            {
+                CommodityInShoppingTrolley model = new CommodityInShoppingTrolley();
+                model.CommodityId = id.Value;
+                model.UnitPrice = Convert.ToInt32(price);
+                model.Size = size;
+                model.Capacity = capacity;
+                model.Color = color;
+                model.UserId = userId;
+                model.Quantity = quantity;
+                this.db.CommodityInShoppingTrolleys.Add(model);
+            }
+            
             this.db.SaveChanges();
             return RedirectToAction("Home", "ShoppingTrolleys");
         }

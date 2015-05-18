@@ -20,6 +20,7 @@ namespace Market.DAL
             this.SiteFeedbacks = new HashSet<SiteFeedback>();
             this.RequiredCommoditys = new HashSet<RequiredCommodity>();
             this.UserProfileCommoditys = new HashSet<UserProfileCommodity>();
+            this.Orders = new HashSet<Order>();
         }
     
         public int UserId { get; set; }
@@ -43,5 +44,6 @@ namespace Market.DAL
         public virtual ICollection<UserProfileCommodity> UserProfileCommoditys { get; set; }
         public virtual ShoppingTrolley ShoppingTrolley { get; set; }
         public virtual Favorite Favorite { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -38,8 +38,7 @@ namespace Market.DAL
         public virtual DbSet<Manufacturer> Manufacturers { get; set; }
         public virtual DbSet<SiteFeedback> SiteFeedbacks { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<CommodityInOrderDetail> CommodityInOrderDetails { get; set; }
+        public virtual DbSet<CommodityInOrder> CommodityInOrders { get; set; }
         public virtual DbSet<UserProfileCommodity> UserProfileCommodities { get; set; }
         public virtual DbSet<CommodityInShoppingTrolley> CommodityInShoppingTrolleys { get; set; }
         public virtual DbSet<CommodityInFavorite> CommodityInFavorites { get; set; }

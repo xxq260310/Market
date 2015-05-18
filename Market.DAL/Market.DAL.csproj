@@ -73,7 +73,7 @@
     <Compile Include="CommodityInfo.cs">
       <DependentUpon>MarketModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CommodityInOrderDetail.cs">
+    <Compile Include="CommodityInOrder.cs">
       <DependentUpon>MarketModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CommodityInShoppingTrolley.cs">
@@ -108,9 +108,6 @@
       <DependentUpon>MarketModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Order.cs">
-      <DependentUpon>MarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderDetail.cs">
       <DependentUpon>MarketModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ParentCategory.cs">
