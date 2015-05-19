@@ -117,6 +117,8 @@ namespace Portal.Controllers
                                      Quantity = commodity.Quantity,
                                      Component = commodity.Component,
                                      Weight = commodity.Weight,
+                                     ImageData = commodity.ImageData,
+                                     ImageType = commodity.ImageType,
                                      CommodityInfos = commodity.CommodityInfos.Select(u => new CommodityInfoViewModel()
                                      {
                                          Color = u.Color,

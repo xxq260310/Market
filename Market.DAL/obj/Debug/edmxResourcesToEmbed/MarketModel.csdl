@@ -30,7 +30,6 @@
       <End Role="Commodity" EntitySet="Commodities" />
       <End Role="Manufacturer" EntitySet="Manufacturers" />
     </AssociationSet>
-    <EntitySet Name="OrderDetails" EntityType="MarketModel.OrderDetail" />
     <AssociationSet Name="FeedbackCommodity" Association="MarketModel.FeedbackCommodity">
       <End Role="Feedback" EntitySet="Feedbacks" />
       <End Role="Commodity" EntitySet="Commodities" />
@@ -47,19 +46,7 @@
       <End Role="RequiredCommodity" EntitySet="RequiredCommodities" />
       <End Role="UserProfile" EntitySet="UserProfiles" />
     </AssociationSet>
-    <EntitySet Name="CommodityInOrderDetails" EntityType="MarketModel.CommodityInOrderDetail" />
-    <AssociationSet Name="CommodityOrderCommodityDetail" Association="MarketModel.CommodityOrderCommodityDetail">
-      <End Role="Commodity" EntitySet="Commodities" />
-      <End Role="OrderCommodityDetail" EntitySet="CommodityInOrderDetails" />
-    </AssociationSet>
-    <AssociationSet Name="OrderDetailOrderCommodityDetail" Association="MarketModel.OrderDetailOrderCommodityDetail">
-      <End Role="OrderDetail" EntitySet="OrderDetails" />
-      <End Role="OrderCommodityDetail" EntitySet="CommodityInOrderDetails" />
-    </AssociationSet>
-    <AssociationSet Name="OrderOrderDetail" Association="MarketModel.OrderOrderDetail">
-      <End Role="Order" EntitySet="Orders" />
-      <End Role="OrderDetail" EntitySet="OrderDetails" />
-    </AssociationSet>
+    <EntitySet Name="CommodityInOrders" EntityType="MarketModel.CommodityInOrder" />
     <EntitySet Name="UserProfileCommodities" EntityType="MarketModel.UserProfileCommodity" />
     <AssociationSet Name="UserProfileUserProfileCommodity" Association="MarketModel.UserProfileUserProfileCommodity">
       <End Role="UserProfile" EntitySet="UserProfiles" />
@@ -100,6 +87,18 @@
       <End Role="CommodityInfo" EntitySet="CommodityInfoes" />
       <End Role="Commodity" EntitySet="Commodities" />
     </AssociationSet>
+    <AssociationSet Name="UserProfileOrder" Association="MarketModel.UserProfileOrder">
+      <End Role="UserProfile" EntitySet="UserProfiles" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="CommodityInOrderCommodity" Association="MarketModel.CommodityInOrderCommodity">
+      <End Role="CommodityInOrder" EntitySet="CommodityInOrders" />
+      <End Role="Commodity" EntitySet="Commodities" />
+    </AssociationSet>
+    <AssociationSet Name="OrderCommodityInOrder" Association="MarketModel.OrderCommodityInOrder">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="CommodityInOrder" EntitySet="CommodityInOrders" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserProfile">
     <Key>
@@ -125,6 +124,7 @@
     <Property Name="ImageType" Type="String" />
     <Property Name="CreationDate" Type="DateTime" Precision="3" />
     <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Orders" Relationship="MarketModel.UserProfileOrder" FromRole="UserProfile" ToRole="Order" />
   </EntityType>
   <EntityType Name="Commodity">
     <Key>
@@ -147,7 +147,6 @@
     <NavigationProperty Name="SubCategory" Relationship="MarketModel.CommoditySubCategory" FromRole="Commodity" ToRole="SubCategory" />
     <NavigationProperty Name="Manufacturer" Relationship="MarketModel.CommodityManufacturer" FromRole="Commodity" ToRole="Manufacturer" />
     <NavigationProperty Name="Feedbacks" Relationship="MarketModel.FeedbackCommodity" FromRole="Commodity" ToRole="Feedback" />
-    <NavigationProperty Name="OrderCommodityDetails" Relationship="MarketModel.CommodityOrderCommodityDetail" FromRole="Commodity" ToRole="OrderCommodityDetail" />
     <NavigationProperty Name="UserProfileCommoditys" Relationship="MarketModel.CommodityUserProfileCommodity" FromRole="Commodity" ToRole="UserProfileCommodity" />
     <NavigationProperty Name="CommodityInShoppingTrolleys" Relationship="MarketModel.CommodityCommodityInShoppingTrolley" FromRole="Commodity" ToRole="CommodityInShoppingTrolley" />
     <NavigationProperty Name="CommodityInFavorites" Relationship="MarketModel.CommodityCommodityInFavorite" FromRole="Commodity" ToRole="CommodityInFavorite" />
@@ -160,6 +159,7 @@
     <Property Name="ImageType" Type="String" />
     <Property Name="CreationDate" Type="DateTime" Precision="3" />
     <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="CommodityInOrders" Relationship="MarketModel.CommodityInOrderCommodity" FromRole="Commodity" ToRole="CommodityInOrder" />
   </EntityType>
   <EntityType Name="ParentCategory">
     <Key>
@@ -182,18 +182,19 @@
     <Key>
       <PropertyRef Name="OrderId" />
     </Key>
-    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BuyerId" Type="Int32" />
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="SellerId" Type="Int32" />
     <Property Name="Contact" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
     <Property Name="TotalCost" Type="Double" />
     <Property Name="Address" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="Delivery" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="OrderDetail" Relationship="MarketModel.OrderOrderDetail" FromRole="Order" ToRole="OrderDetail" />
     <Property Name="ConsigneeName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="SellerId" Type="Int32" />
     <Property Name="CreationDate" Type="DateTime" Precision="3" />
     <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="UserProfile" Relationship="MarketModel.UserProfileOrder" FromRole="Order" ToRole="UserProfile" />
+    <NavigationProperty Name="CommodityInOrders" Relationship="MarketModel.OrderCommodityInOrder" FromRole="Order" ToRole="CommodityInOrder" />
   </EntityType>
   <EntityType Name="ShoppingTrolley">
     <Key>
@@ -245,7 +246,7 @@
     <Property Name="CreationDate" Type="DateTime" Precision="3" />
     <Property Name="UpdateDate" Type="DateTime" Precision="3" />
     <NavigationProperty Name="UserProfile" Relationship="MarketModel.RequiredCommodityUserProfile" FromRole="RequiredCommodity" ToRole="UserProfile" />
-    <Property Name="CommodityName" Type="String" FixedLength="false" MaxLength="30" />
+    <Property Name="CommodityName" Type="String" FixedLength="false" MaxLength="30" Unicode="false" />
     <Property Name="Price" Type="Double" />
   </EntityType>
   <EntityType Name="Manufacturer">
@@ -332,15 +333,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="OrderDetail">
-    <Key>
-      <PropertyRef Name="OrderId" />
-    </Key>
-    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
-    <NavigationProperty Name="OrderCommodityDetails" Relationship="MarketModel.OrderDetailOrderCommodityDetail" FromRole="OrderDetail" ToRole="OrderCommodityDetail" />
-    <NavigationProperty Name="Order" Relationship="MarketModel.OrderOrderDetail" FromRole="OrderDetail" ToRole="Order" />
-    <Property Name="Cost" Type="Double" />
-  </EntityType>
   <Association Name="FeedbackCommodity">
     <End Type="MarketModel.Feedback" Role="Feedback" Multiplicity="*" />
     <End Type="MarketModel.Commodity" Role="Commodity" Multiplicity="1" />
@@ -389,54 +381,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="CommodityInOrderDetail">
+  <EntityType Name="CommodityInOrder">
     <Key>
       <PropertyRef Name="CommodityId" />
       <PropertyRef Name="OrderId" />
     </Key>
-    <NavigationProperty Name="Commodity" Relationship="MarketModel.CommodityOrderCommodityDetail" FromRole="OrderCommodityDetail" ToRole="Commodity" />
-    <Property Name="OrderId" Type="Int32" Nullable="false" />
     <Property Name="CommodityId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="OrderDetail" Relationship="MarketModel.OrderDetailOrderCommodityDetail" FromRole="OrderCommodityDetail" ToRole="OrderDetail" />
+    <Property Name="OrderId" Type="Int32" Nullable="false" />
     <Property Name="UnitPrice" Type="Double" />
     <Property Name="Quantity" Type="Int32" />
+    <Property Name="Color" Type="String" FixedLength="false" Unicode="false" MaxLength="10" />
+    <Property Name="Size" Type="String" Nullable="false" FixedLength="false" Unicode="false" MaxLength="10" />
+    <Property Name="Capacity" Type="String" Nullable="false" FixedLength="false" Unicode="false" MaxLength="10" />
+    <NavigationProperty Name="Commodity" Relationship="MarketModel.CommodityInOrderCommodity" FromRole="CommodityInOrder" ToRole="Commodity" />
+    <NavigationProperty Name="Order" Relationship="MarketModel.OrderCommodityInOrder" FromRole="CommodityInOrder" ToRole="Order" />
   </EntityType>
-  <Association Name="CommodityOrderCommodityDetail">
-    <End Type="MarketModel.Commodity" Role="Commodity" Multiplicity="1" />
-    <End Type="MarketModel.CommodityInOrderDetail" Role="OrderCommodityDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Commodity">
-        <PropertyRef Name="CommodityId" />
-      </Principal>
-      <Dependent Role="OrderCommodityDetail">
-        <PropertyRef Name="CommodityId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="OrderDetailOrderCommodityDetail">
-    <End Type="MarketModel.OrderDetail" Role="OrderDetail" Multiplicity="1" />
-    <End Type="MarketModel.CommodityInOrderDetail" Role="OrderCommodityDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="OrderDetail">
-        <PropertyRef Name="OrderId" />
-      </Principal>
-      <Dependent Role="OrderCommodityDetail">
-        <PropertyRef Name="OrderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="OrderOrderDetail">
-    <End Type="MarketModel.Order" Role="Order" Multiplicity="1" />
-    <End Type="MarketModel.OrderDetail" Role="OrderDetail" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Order">
-        <PropertyRef Name="OrderId" />
-      </Principal>
-      <Dependent Role="OrderDetail">
-        <PropertyRef Name="OrderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="UserProfileCommodity">
     <Key>
       <PropertyRef Name="UserId" />
@@ -591,6 +550,42 @@
       </Principal>
       <Dependent Role="CommodityInfo">
         <PropertyRef Name="CommodityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfileOrder">
+    <End Type="MarketModel.UserProfile" Role="UserProfile" Multiplicity="1" />
+    <End Type="MarketModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CommodityInOrderCommodity">
+    <End Type="MarketModel.CommodityInOrder" Role="CommodityInOrder" Multiplicity="*" />
+    <End Type="MarketModel.Commodity" Role="Commodity" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Commodity">
+        <PropertyRef Name="CommodityId" />
+      </Principal>
+      <Dependent Role="CommodityInOrder">
+        <PropertyRef Name="CommodityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrderCommodityInOrder">
+    <End Type="MarketModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="MarketModel.CommodityInOrder" Role="CommodityInOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="CommodityInOrder">
+        <PropertyRef Name="OrderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

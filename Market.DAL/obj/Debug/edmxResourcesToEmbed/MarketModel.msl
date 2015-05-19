@@ -69,14 +69,14 @@
       <EntityTypeMapping TypeName="IsTypeOf(MarketModel.Order)">
         <MappingFragment StoreEntitySet="Orders">
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="SellerId" ColumnName="SellerId" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
           <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
           <ScalarProperty Name="Address" ColumnName="Address" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Delivery" ColumnName="Delivery" />
           <ScalarProperty Name="ConsigneeName" ColumnName="ConsigneeName" />
-          <ScalarProperty Name="SellerId" ColumnName="SellerId" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
           <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
         </MappingFragment>
@@ -128,6 +128,8 @@
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
           <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="CommodityName" ColumnName="CommodityName" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -166,21 +168,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="OrderDetails">
-      <EntityTypeMapping TypeName="IsTypeOf(MarketModel.OrderDetail)">
-        <MappingFragment StoreEntitySet="OrderDetails">
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="Cost" ColumnName="Cost" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CommodityInOrderDetails">
-      <EntityTypeMapping TypeName="IsTypeOf(MarketModel.CommodityInOrderDetail)">
-        <MappingFragment StoreEntitySet="CommodityInOrderDetails">
+    <EntitySetMapping Name="CommodityInOrders">
+      <EntityTypeMapping TypeName="IsTypeOf(MarketModel.CommodityInOrder)">
+        <MappingFragment StoreEntitySet="CommodityInOrders">
           <ScalarProperty Name="CommodityId" ColumnName="CommodityId" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

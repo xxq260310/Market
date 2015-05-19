@@ -70,17 +70,13 @@ namespace Portal.Controllers
             return View();
         }
 
-        public ActionResult AddCommodityInFavorite(int? id)
+        public JsonResult AddCommodityInFavorite(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
             var userId = (from userProfile in this.db.UserProfiles
                           where userProfile.UserName == User.Identity.Name
                           select userProfile.UserId).FirstOrDefault();
             Favorite model = this.db.Favorites.Find(userId);
+            int state = 0;
             if (model == null)
             {
                 Favorite favorite = new Favorite()
@@ -96,6 +92,8 @@ namespace Portal.Controllers
                     CommodityId = id.Value
                 };
                 this.db.CommodityInFavorites.Add(commodityInFavorite);
+
+                state = 1;
             }
             else
             {
@@ -110,11 +108,17 @@ namespace Portal.Controllers
                         CommodityId = id.Value
                     };
                     this.db.CommodityInFavorites.Add(commodityInFavorite);
+                    state = 1;
                 }
+                else
+                {
+                    state = 0;
+                }
+                
             }
             
             this.db.SaveChanges();
-            return RedirectToAction("Home");
+            return Json(state, JsonRequestBehavior.AllowGet);
         }
 
         //public JsonResult GetJson(int id)

@@ -231,8 +231,21 @@
         });
     });
 
-
-    @*$(".whish").on("click",".favorite",function(){
+    $(function(){
+        $("#favorite").click(function(){
+            $.getJSON("/Favorites/AddCommodityInFavorite", { id: @Model.CommodityId }, function(data) {
+                if(data == 0)
+                {
+                    alert("您已经收藏过此商品啦！");
+                }
+                else
+                {
+                    alert("收藏成功!");
+                }
+            });
+        })
+    })
+        @*$(".whish").on("click",".favorite",function(){
         $.getJSON("/Favorites/GetJson", { id: @Model.CommodityId }, function(data) {
             if(data == 1)
             {
@@ -470,11 +483,11 @@
                                     </ul>
                                     <div class="clearfix"></div>
                                 </div>
-
-
+                                
+                                @*href="@Url.Action("AddCommodityInFavorite", "Favorites", new { id = Model.CommodityId })"*@
                                 <div class="wish-list">
                                     <ul>
-                                        <li class="wish"><a class="favorite" href="@Url.Action("AddCommodityInFavorite", "Favorites" , new { id = Model.CommodityId })">加入收藏夹</a></li>
+                                        <li class="wish"><a class="favorite" id="favorite" style="cursor:pointer;">加入收藏夹</a></li>
                                     </ul>
                                 </div>
 

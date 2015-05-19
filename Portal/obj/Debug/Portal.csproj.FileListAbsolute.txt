@@ -232,3 +232,37 @@ F:\毕业设计\Market\Portal\bin\Newtonsoft.Json.xml
 F:\毕业设计\Market\Portal\obj\Debug\Portal.csprojResolveAssemblyReference.cache
 F:\毕业设计\Market\Portal\obj\Debug\Portal.dll
 F:\毕业设计\Market\Portal\obj\Debug\Portal.pdb
+G:\Graduate Project\Market\Portal\bin\Portal.dll.config
+G:\Graduate Project\Market\Portal\bin\Portal.dll
+G:\Graduate Project\Market\Portal\bin\Portal.pdb
+G:\Graduate Project\Market\Portal\bin\Antlr3.Runtime.dll
+G:\Graduate Project\Market\Portal\bin\EntityFramework.dll
+G:\Graduate Project\Market\Portal\bin\EntityFramework.SqlServer.dll
+G:\Graduate Project\Market\Portal\bin\Microsoft.Web.Infrastructure.dll
+G:\Graduate Project\Market\Portal\bin\Newtonsoft.Json.dll
+G:\Graduate Project\Market\Portal\bin\PagedList.dll
+G:\Graduate Project\Market\Portal\bin\PagedList.Mvc.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.Helpers.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.Mvc.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.Optimization.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.Razor.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.Deployment.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.dll
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.Razor.dll
+G:\Graduate Project\Market\Portal\bin\WebGrease.dll
+G:\Graduate Project\Market\Portal\bin\EntityFramework.xml
+G:\Graduate Project\Market\Portal\bin\EntityFramework.SqlServer.xml
+G:\Graduate Project\Market\Portal\bin\PagedList.xml
+G:\Graduate Project\Market\Portal\bin\PagedList.Mvc.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.Helpers.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.Mvc.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.Optimization.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.Razor.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.Deployment.xml
+G:\Graduate Project\Market\Portal\bin\System.Web.WebPages.Razor.xml
+G:\Graduate Project\Market\Portal\bin\Antlr3.Runtime.pdb
+G:\Graduate Project\Market\Portal\bin\Newtonsoft.Json.xml
+G:\Graduate Project\Market\Portal\obj\Debug\Portal.csprojResolveAssemblyReference.cache
+G:\Graduate Project\Market\Portal\obj\Debug\Portal.dll
+G:\Graduate Project\Market\Portal\obj\Debug\Portal.pdb

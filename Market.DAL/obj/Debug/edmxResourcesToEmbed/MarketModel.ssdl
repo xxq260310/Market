@@ -14,8 +14,7 @@
     <EntitySet Name="Manufacturers" EntityType="MarketModel.Store.Manufacturers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SiteFeedbacks" EntityType="MarketModel.Store.SiteFeedbacks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Feedbacks" EntityType="MarketModel.Store.Feedbacks" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="OrderDetails" EntityType="MarketModel.Store.OrderDetails" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CommodityInOrderDetails" EntityType="MarketModel.Store.CommodityInOrderDetails" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommodityInOrders" EntityType="MarketModel.Store.CommodityInOrders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserProfileCommodities" EntityType="MarketModel.Store.UserProfileCommodities" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CommodityInShoppingTrolleys" EntityType="MarketModel.Store.CommodityInShoppingTrolleys" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CommodityInFavorites" EntityType="MarketModel.Store.CommodityInFavorites" store:Type="Tables" Schema="dbo" />
@@ -52,18 +51,6 @@
       <End Role="RequiredCommodity" EntitySet="RequiredCommodities" />
       <End Role="UserProfile" EntitySet="UserProfiles" />
     </AssociationSet>
-    <AssociationSet Name="CommodityOrderCommodityDetail" Association="MarketModel.Store.CommodityOrderCommodityDetail">
-      <End Role="Commodity" EntitySet="Commodities" />
-      <End Role="OrderCommodityDetail" EntitySet="CommodityInOrderDetails" />
-    </AssociationSet>
-    <AssociationSet Name="OrderDetailOrderCommodityDetail" Association="MarketModel.Store.OrderDetailOrderCommodityDetail">
-      <End Role="OrderDetail" EntitySet="OrderDetails" />
-      <End Role="OrderCommodityDetail" EntitySet="CommodityInOrderDetails" />
-    </AssociationSet>
-    <AssociationSet Name="OrderOrderDetail" Association="MarketModel.Store.OrderOrderDetail">
-      <End Role="Order" EntitySet="Orders" />
-      <End Role="OrderDetail" EntitySet="OrderDetails" />
-    </AssociationSet>
     <AssociationSet Name="UserProfileUserProfileCommodity" Association="MarketModel.Store.UserProfileUserProfileCommodity">
       <End Role="UserProfile" EntitySet="UserProfiles" />
       <End Role="UserProfileCommodity" EntitySet="UserProfileCommodities" />
@@ -99,6 +86,18 @@
     <AssociationSet Name="CommodityInfoCommodity" Association="MarketModel.Store.CommodityInfoCommodity">
       <End Role="CommodityInfo" EntitySet="CommodityInfoes" />
       <End Role="Commodity" EntitySet="Commodities" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfileOrder" Association="MarketModel.Store.UserProfileOrder">
+      <End Role="UserProfile" EntitySet="UserProfiles" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="CommodityInOrderCommodity" Association="MarketModel.Store.CommodityInOrderCommodity">
+      <End Role="CommodityInOrder" EntitySet="CommodityInOrders" />
+      <End Role="Commodity" EntitySet="Commodities" />
+    </AssociationSet>
+    <AssociationSet Name="OrderCommodityInOrder" Association="MarketModel.Store.OrderCommodityInOrder">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="CommodityInOrder" EntitySet="CommodityInOrders" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserProfiles">
@@ -166,14 +165,14 @@
       <PropertyRef Name="OrderId" />
     </Key>
     <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="BuyerId" Type="int" Nullable="true" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="SellerId" Type="int" Nullable="true" />
     <Property Name="Contact" Type="char" Nullable="true" MaxLength="11" />
     <Property Name="TotalCost" Type="float" Nullable="true" />
     <Property Name="Address" Type="varchar" Nullable="true" MaxLength="50" />
     <Property Name="State" Type="varchar" Nullable="true" MaxLength="20" />
     <Property Name="Delivery" Type="varchar" Nullable="true" MaxLength="20" />
     <Property Name="ConsigneeName" Type="varchar" Nullable="true" MaxLength="10" />
-    <Property Name="SellerId" Type="int" Nullable="true" />
     <Property Name="CreationDate" Type="datetime" Nullable="true" />
     <Property Name="UpdateDate" Type="datetime" Nullable="true" />
   </EntityType>
@@ -217,10 +216,11 @@
     </Key>
     <Property Name="RequiredCommodityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="Title" Type="varchar" Nullable="true" MaxLength="50" />
     <Property Name="Content" Type="varchar" Nullable="true" MaxLength="4000" />
     <Property Name="CreationDate" Type="datetime" Nullable="true" />
     <Property Name="UpdateDate" Type="datetime" Nullable="true" />
+    <Property Name="CommodityName" Type="varchar" Nullable="true" MaxLength="30" />
+    <Property Name="Price" Type="float" Nullable="true" />
   </EntityType>
   <EntityType Name="Manufacturers">
     <Key>
@@ -254,22 +254,18 @@
     <Property Name="CreationDate" Type="datetime" Nullable="true" />
     <Property Name="UpdateDate" Type="datetime" Nullable="true" />
   </EntityType>
-  <EntityType Name="OrderDetails">
-    <Key>
-      <PropertyRef Name="OrderId" />
-    </Key>
-    <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Cost" Type="float" Nullable="true" />
-  </EntityType>
-  <EntityType Name="CommodityInOrderDetails">
+  <EntityType Name="CommodityInOrders">
     <Key>
       <PropertyRef Name="CommodityId" />
       <PropertyRef Name="OrderId" />
     </Key>
-    <Property Name="OrderId" Type="int" Nullable="false" />
     <Property Name="CommodityId" Type="int" Nullable="false" />
+    <Property Name="OrderId" Type="int" Nullable="false" />
     <Property Name="UnitPrice" Type="float" Nullable="true" />
     <Property Name="Quantity" Type="int" Nullable="true" />
+    <Property Name="Color" Type="varchar" Nullable="true" MaxLength="10" />
+    <Property Name="Size" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="Capacity" Type="varchar" Nullable="false" MaxLength="10" />
   </EntityType>
   <EntityType Name="UserProfileCommodities">
     <Key>
@@ -409,42 +405,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="CommodityOrderCommodityDetail">
-    <End Role="Commodity" Type="MarketModel.Store.Commodities" Multiplicity="1" />
-    <End Role="OrderCommodityDetail" Type="MarketModel.Store.CommodityInOrderDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Commodity">
-        <PropertyRef Name="CommodityId" />
-      </Principal>
-      <Dependent Role="OrderCommodityDetail">
-        <PropertyRef Name="CommodityId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="OrderDetailOrderCommodityDetail">
-    <End Role="OrderDetail" Type="MarketModel.Store.OrderDetails" Multiplicity="1" />
-    <End Role="OrderCommodityDetail" Type="MarketModel.Store.CommodityInOrderDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="OrderDetail">
-        <PropertyRef Name="OrderId" />
-      </Principal>
-      <Dependent Role="OrderCommodityDetail">
-        <PropertyRef Name="OrderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="OrderOrderDetail">
-    <End Role="Order" Type="MarketModel.Store.Orders" Multiplicity="1" />
-    <End Role="OrderDetail" Type="MarketModel.Store.OrderDetails" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Order">
-        <PropertyRef Name="OrderId" />
-      </Principal>
-      <Dependent Role="OrderDetail">
-        <PropertyRef Name="OrderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="UserProfileUserProfileCommodity">
     <End Role="UserProfile" Type="MarketModel.Store.UserProfiles" Multiplicity="1" />
     <End Role="UserProfileCommodity" Type="MarketModel.Store.UserProfileCommodities" Multiplicity="*" />
@@ -550,6 +510,42 @@
       </Principal>
       <Dependent Role="CommodityInfo">
         <PropertyRef Name="CommodityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfileOrder">
+    <End Role="UserProfile" Type="MarketModel.Store.UserProfiles" Multiplicity="1" />
+    <End Role="Order" Type="MarketModel.Store.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CommodityInOrderCommodity">
+    <End Role="CommodityInOrder" Type="MarketModel.Store.CommodityInOrders" Multiplicity="*" />
+    <End Role="Commodity" Type="MarketModel.Store.Commodities" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Commodity">
+        <PropertyRef Name="CommodityId" />
+      </Principal>
+      <Dependent Role="CommodityInOrder">
+        <PropertyRef Name="CommodityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrderCommodityInOrder">
+    <End Role="Order" Type="MarketModel.Store.Orders" Multiplicity="1" />
+    <End Role="CommodityInOrder" Type="MarketModel.Store.CommodityInOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="CommodityInOrder">
+        <PropertyRef Name="OrderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

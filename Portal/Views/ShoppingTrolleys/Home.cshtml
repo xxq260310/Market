@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "我的购物车";
-
+    var index = 0;
 }
 <script type="text/javascript">
     $(function () {
@@ -21,17 +21,17 @@
     });
 
     $(function () {
-        var checked = $("input[type='checkbox'][name='singlecommodity']");
         var length = $("table").find("tr").length;
-        $(checked).click(function () {
-            if ($(this).prop("checked") == true) {
-                var price = $(this).parent().parent().children().eq(4).children().val();
-                $(this).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥"+ price +"");
+        for (var i = 0; i < length; i++) {
+            var checked = $("input[type='checkbox'][name='[" + i + "].singlecommodity']");
+            if ($(checked).prop("checked") == true) {
+                var price = $(checked).parent().parent().children().eq(4).children().val();
+                $(checked).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥" + price + "");
             }
             else {
-                $(this).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥0.00");
+                $(checked).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥0.00");
             }
-        });
+        }
     });
 
     function reverseChecked() {
@@ -187,7 +187,7 @@
                         {
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="singlecommodity" />
+                                    <input type="checkbox" name='[@index].singlecommodity' />
                                 </td>
                                 <td width="300px;">
                                     <img width="50" height="50" src="@Url.Action("GetImageByCommodityId", "Commodities", new { id = p.CommodityId})" />
