@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/18/2015 20:44:48
--- Generated from EDMX file: G:\毕业设计\Market\Market.DAL\MarketModel.edmx
+-- Date Created: 05/20/2015 11:21:56
+-- Generated from EDMX file: G:\Graduate Project\Market\Market.DAL\MarketModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -72,10 +72,10 @@ IF OBJECT_ID(N'[dbo].[FK_UserProfileOrder]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Orders] DROP CONSTRAINT [FK_UserProfileOrder];
 GO
 IF OBJECT_ID(N'[dbo].[FK_CommodityInOrderCommodity]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_CommodityInOrderCommodity];
+    ALTER TABLE [dbo].[CommodityInOrders] DROP CONSTRAINT [FK_CommodityInOrderCommodity];
 GO
 IF OBJECT_ID(N'[dbo].[FK_OrderCommodityInOrder]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CommodityInOrderDetails] DROP CONSTRAINT [FK_OrderCommodityInOrder];
+    ALTER TABLE [dbo].[CommodityInOrders] DROP CONSTRAINT [FK_OrderCommodityInOrder];
 GO
 
 -- --------------------------------------------------
@@ -121,8 +121,8 @@ GO
 IF OBJECT_ID(N'[dbo].[Feedbacks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Feedbacks];
 GO
-IF OBJECT_ID(N'[dbo].[CommodityInOrderDetails]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[CommodityInOrderDetails];
+IF OBJECT_ID(N'[dbo].[CommodityInOrders]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CommodityInOrders];
 GO
 IF OBJECT_ID(N'[dbo].[UserProfileCommodities]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserProfileCommodities];

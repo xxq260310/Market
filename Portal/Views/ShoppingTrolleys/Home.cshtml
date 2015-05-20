@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "我的购物车";
-    var index = 0;
 }
+
 <script type="text/javascript">
     $(function () {
         var menu_ul = $('.menu > li > ul'),
@@ -21,18 +21,47 @@
     });
 
     $(function () {
-        var length = $("table").find("tr").length;
-        for (var i = 0; i < length; i++) {
-            var checked = $("input[type='checkbox'][name='[" + i + "].singlecommodity']");
-            if ($(checked).prop("checked") == true) {
-                var price = $(checked).parent().parent().children().eq(4).children().val();
-                $(checked).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥" + price + "");
+        var length = $("table").find("tr").length - 1;
+        var checked = $("input[type='checkbox'][name='singlecommodity']");
+        $(checked).click(function () {
+            if ($(this).prop("checked") == true) {
+                var price = $(this).parent().parent().children().eq(4).children().val();
+                var checkedPrice = {
+                    LastPrice : $("#TotalCost")[0].value,
+                    CurrentPrice : price
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GetCheckedTotalCost", "ShoppingTrolleys")',
+                    type: "POST",
+                    data: checkedPrice,
+                    dataType: "json",
+                    success: function (req) {
+                        $("#TotalCost")[0].value = req;
+                        $(checked).parent().parent().parent().children().eq(length).children().eq(4).children().eq(1).children().eq(0).html("￥" + req + ".00");
+                    }
+                });
             }
             else {
-                $(checked).parent().parent().parent().children().eq(2).children().eq(4).children().eq(1).children().eq(0).html("￥0.00");
-            }
-        }
-    });
+                var price = $(this).parent().parent().children().eq(4).children().val();
+                var notCheckedPrice = {
+                    LastPrice: $("#TotalCost")[0].value,
+                    CurrentPrice: price
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GetNotCheckedTotalCost", "ShoppingTrolleys")',
+                        type: "POST",
+                        data: notCheckedPrice,
+                        dataType: "json",
+                        success: function (req) {
+                            $("#TotalCost")[0].value = req;
+                            $(checked).parent().parent().parent().children().eq(length).children().eq(4).children().eq(1).children().eq(0).html("￥" + req + ".00");
+                        }
+                    });
+                }
+            });
+    })
 
     function reverseChecked() {
         var checked = $("input[type='checkbox'][name='singlecommodity']");
@@ -41,31 +70,49 @@
         })
     }
 
+    $(function () {
+        var length = $("table").find("tr").length - 1;
+        var checked = $("input[type='checkbox'][name='AllChecked']");
+        $(checked).click(function () {
+            if ($(this).prop("checked") == true) {
+                $.getJSON("/ShoppingTrolleys/GetAllShoppingTrolleysCost", { id: 1 }, function (data) {
+                    $("#TotalCost")[0].value = data;
+                    $(checked).parent().parent().parent().children().eq(length).children().eq(4).children().eq(1).children().eq(0).html("￥" + data + ".00");
+                })
+            }
+            else {
+                $("#TotalCost")[0].value = 0;
+                $(checked).parent().parent().parent().children().eq(length).children().eq(4).children().eq(1).children().eq(0).html("￥0.00");
+            }
+        })
+    });
 
+    $(function () {
+        var dialog = $("#dialog-confirm").dialog({
+            autoOpen: false,
+            width:350,
+            height: 140,
+            modal: true,
+            buttons: {
+                "Delete": function () {
+                    $(this).submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#delete").button().on("click", function () {
+            dialog.dialog("open");
+        });
+    });
 </script>
-<style type="text/css">
-    .top_grid2button {
-        display: inline-block;
-        padding: 13px 25px;
-        background: #df1f26;
-        color: #fff;
-        font-size: 1em;
-        line-height: 18px;
-        text-transform: uppercase;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        -webkit-appearance: button;
-    }
+<input type="hidden" name="TotalCost" id="TotalCost" />
 
-    .top_grid2 ibutton a:hover {
-        color: black;
-    }
-
-    .top_grid2 button a {
-        color: white;
-    }
-</style>
+<div id="dialog-confirm" title="Delete ShoppingTrolley?">
+    @*<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure?</p>*@
+</div>
 
 <div class="header">
     <div class="header_top">
@@ -165,7 +212,7 @@
                     <table class="table">
                         <tr>
                             <th>
-                                <input type="checkbox" onclick="reverseChecked()" />
+                                <input type="checkbox" onclick="reverseChecked()" id="AllChecked" name="AllChecked" />
                             </th>
                             <th>
                                 商品信息:
@@ -187,7 +234,7 @@
                         {
                             <tr>
                                 <td>
-                                    <input type="checkbox" name='[@index].singlecommodity' />
+                                    <input type="checkbox" name='singlecommodity' />
                                 </td>
                                 <td width="300px;">
                                     <img width="50" height="50" src="@Url.Action("GetImageByCommodityId", "Commodities", new { id = p.CommodityId})" />
@@ -200,27 +247,19 @@
                                     @p.UnitPrice
                                 </td>
                                 <td>
-                                    @p.Price <input type="hidden" value="@p.Price"/>
+                                    @p.Price <input type="hidden" value="@p.Price" />
                                 </td>
                                 <td>
-                                    @Html.ActionLink("删除", "SingleDelete", "ShoppingTrolleys", new { id = p.CommodityId }, null) <br />
+                                    <a id="delete" href="@Url.Action("SingleDelete", "ShoppingTrolleys", new { id = p.CommodityId })">删除</a><br />
                                     <a href="@Url.Action("AddCommodityInFavorite", "Favorites" , new { id = p.CommodityId })">加入收藏夹</a>
                                 </td>
                             </tr>
                         }
                         <tr>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <span>总价（不含运费）：</span> <span><em style="color:red;">￥0.00</em></span>
                             </td>

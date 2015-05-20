@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Portal;
 using Portal.Models;
 using Portal.ViewModels;
+using Portal.DTO;
 
 namespace Portal.Controllers
 {
@@ -39,8 +40,8 @@ namespace Portal.Controllers
 
             var userId = this.db.UserProfiles.Where(x => x.UserName == User.Identity.Name).Select(p => p.UserId).FirstOrDefault();
             var commodityInShoppingTrolley = (from commodity in this.db.CommodityInShoppingTrolleys
-                                               where commodity.UserId == userId
-                                               select commodity).ToList();
+                                              where commodity.UserId == userId
+                                              select commodity).ToList();
             List<CommodityInShoppingTrolleyViewModel> model = new List<CommodityInShoppingTrolleyViewModel>();
             foreach (var p in commodityInShoppingTrolley)
             {
@@ -63,12 +64,68 @@ namespace Portal.Controllers
             ViewBag.Count = model.Count;
 
             var commodityInShoppingTrolleyList = (from shoppingTrolleyItem in this.db.ShoppingTrolleys
-                                              from commodityInShoppingTrolleyItem in this.db.CommodityInShoppingTrolleys
-                                              where shoppingTrolleyItem.UserId == commodityInShoppingTrolleyItem.UserId
-                                              && shoppingTrolleyItem.UserProfile.UserName == User.Identity.Name
-                                              select commodityInShoppingTrolleyItem).ToList();
+                                                  from commodityInShoppingTrolleyItem in this.db.CommodityInShoppingTrolleys
+                                                  where shoppingTrolleyItem.UserId == commodityInShoppingTrolleyItem.UserId
+                                                  && shoppingTrolleyItem.UserProfile.UserName == User.Identity.Name
+                                                  select commodityInShoppingTrolleyItem).ToList();
             ViewBag.ShoppingTrolleysCount = commodityInShoppingTrolleyList.Count;
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetNotCheckedTotalCost(Cost cost)
+        {
+            int a = 0;
+            int b = 0;
+            if (!string.IsNullOrEmpty(cost.CurrentPrice))
+            {
+                a = Convert.ToInt32(cost.CurrentPrice);
+            }
+
+            if (!string.IsNullOrEmpty(cost.LastPrice))
+            {
+                b = Convert.ToInt32(cost.LastPrice);
+            }
+
+            int Cost = b - a;
+            return this.Json(Cost);
+        }
+
+        [HttpPost]
+        public JsonResult GetCheckedTotalCost(Cost cost)
+        {
+            int a = 0;
+            int b = 0;
+            if (!string.IsNullOrEmpty(cost.CurrentPrice))
+            {
+                a = Convert.ToInt32(cost.CurrentPrice);
+            }
+
+            if (!string.IsNullOrEmpty(cost.LastPrice))
+            {
+                b = Convert.ToInt32(cost.LastPrice);
+            }
+
+            int Cost = a + b;
+            return this.Json(Cost);
+        }
+
+        public JsonResult GetAllShoppingTrolleysCost(int? id) 
+        {
+            double cost = 0;
+            if(id == 1)
+            {
+                var commodityInShoppingTrolley = (from commodity in this.db.CommodityInShoppingTrolleys
+                                                  from shoppingTrolley in this.db.ShoppingTrolleys
+                                               where commodity.UserId == shoppingTrolley.UserId
+                                               select commodity).ToList();
+            foreach (var p in commodityInShoppingTrolley)
+            {
+                cost = cost + (p.Quantity.Value * p.UnitPrice.Value);
+            }
+            }
+
+            return this.Json(cost, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SingleDelete(int? id)

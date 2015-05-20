@@ -150,6 +150,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequiredCommoditiesController.cs" />
     <Compile Include="Controllers\SiteFeedbacksController.cs" />
+    <Compile Include="DTO\Cost.cs" />
     <Compile Include="Filter\AuthorizationFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -159,13 +160,12 @@
     <Compile Include="Models\Commodity.cs" />
     <Compile Include="Models\CommodityInFavorite.cs" />
     <Compile Include="Models\CommodityInfo.cs" />
-    <Compile Include="Models\CommodityInOrderDetail.cs" />
+    <Compile Include="Models\CommodityInOrder.cs" />
     <Compile Include="Models\CommodityInShoppingTrolley.cs" />
     <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\Manufacturer.cs" />
     <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\ParentCategory.cs" />
     <Compile Include="Models\RequiredCommodity.cs" />
     <Compile Include="Models\Role.cs" />
@@ -229,7 +229,9 @@
     <Content Include="Content\base\tooltip.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Dialog.css" />
     <Content Include="Content\etalage.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
@@ -389,6 +391,7 @@
     <Content Include="Views\SingleCommodity\SingleCommodity.cshtml" />
     <Content Include="Views\Commodities\TemporaryAdminImage.cshtml" />
     <Content Include="Views\ShoppingTrolleys\SingleDelete.cshtml" />
+    <Content Include="Views\Login\AlertLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

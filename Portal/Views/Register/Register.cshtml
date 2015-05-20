@@ -6,6 +6,11 @@
 <br />
 <h2>@ViewBag.Title.</h2>
 
+<script type="text/javascript">
+    $("#submit").click(function () {
+
+    });
+</script>
 @using (Html.BeginForm("Register", "Register", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-horizontal">
@@ -74,14 +79,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ImageData, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                <div>Upload your head portrait: <input type="file" name="Image" /></div>
+                <div>上传你的头像: <input type="file" name="Image" /></div>
                 @Html.ValidationMessageFor(model => model.ImageData, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Register" />
+                <input type="submit" class="btn btn-default" value="Register" id="submit"/>
             </div>
         </div>
     </div>

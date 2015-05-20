@@ -14,12 +14,13 @@ namespace Portal.Models
             this.SiteFeedbacks = new HashSet<SiteFeedback>();
             this.RequiredCommoditys = new HashSet<RequiredCommodity>();
             this.UserProfileCommoditys = new HashSet<UserProfileCommodity>();
+            this.Orders = new HashSet<Order>();
         }
 
         [Key]
         public int UserId { get; set; }
         public string UserName { get; set; }
-        public int RoleId { get; set; }
+        public Nullable<int> RoleId { get; set; }
         public string Nickname { get; set; }
         public string Sex { get; set; }
         public string Email { get; set; }
@@ -38,5 +39,6 @@ namespace Portal.Models
         public virtual ICollection<UserProfileCommodity> UserProfileCommoditys { get; set; }
         public virtual ShoppingTrolley ShoppingTrolley { get; set; }
         public virtual Favorite Favorite { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

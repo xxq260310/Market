@@ -6,16 +6,19 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class CommodityInOrderDetail
+    public class CommodityInOrder
     {
         [Key]
-        public int OrderId { get; set; }
-        [Key]
         public int CommodityId { get; set; }
+        [Key]
+        public int OrderId { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<int> Quantity { get; set; }
+        public string Color { get; set; }
+        public string Size { get; set; }
+        public string Capacity { get; set; }
 
         public virtual Commodity Commodity { get; set; }
-        public virtual OrderDetail OrderDetail { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

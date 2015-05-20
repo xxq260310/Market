@@ -34,15 +34,13 @@ namespace Portal
 
         public DbSet<CommodityInFavorite> CommodityInFavorites { get; set; }
 
-        public DbSet<CommodityInOrderDetail> CommodityInOrderDetails { get; set; }
+        public DbSet<CommodityInOrder> CommodityInOrders { get; set; }
 
         public DbSet<CommodityInShoppingTrolley> CommodityInShoppingTrolleys { get; set; }
 
         public DbSet<Announcement> Announcements { get; set; }
 
         public DbSet<Order> Orders { get; set; }
-
-        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
 
@@ -54,10 +52,9 @@ namespace Portal
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().HasOptional(p => p.OrderDetail).WithRequired(p => p.Order);
             modelBuilder.Entity<UserProfileCommodity>().HasKey(p => new { p.UserId, p.CommodityId });
             modelBuilder.Entity<CommodityInFavorite>().HasKey(p => new { p.CommodityId, p.UserId });
-            modelBuilder.Entity<CommodityInOrderDetail>().HasKey(p => new { p.CommodityId, p.OrderId });
+            modelBuilder.Entity<CommodityInOrder>().HasKey(p => new { p.CommodityId, p.OrderId });
             modelBuilder.Entity<CommodityInShoppingTrolley>().HasKey(p => new { p.UserId, p.CommodityId });
         }
     }

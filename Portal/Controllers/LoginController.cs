@@ -34,5 +34,27 @@ namespace Portal.Controllers
                 return this.RedirectToAction("Index", "Login");
             }
         }
+
+        public ActionResult AlertLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AlertLogin(LoginViewModel model)
+        {
+            if (Membership.ValidateUser(model.UserName, model.Password))
+            {
+                FormsAuthentication.SetAuthCookie(model.UserName, false);
+                var IsAuthenticated = User.Identity.IsAuthenticated;
+                Console.WriteLine(System.Web.HttpContext.Current.User.Identity.IsAuthenticated);
+                return this.RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return this.RedirectToAction("Index", "Login");
+            }
+        }
     }
 }

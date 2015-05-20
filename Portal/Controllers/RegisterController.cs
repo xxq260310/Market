@@ -65,7 +65,8 @@ namespace Portal.Controllers
                     };
                     this.db.UserProfiles.Add(userProfile);
                     this.db.SaveChanges();
-                    return RedirectToAction("Index", "Login");
+
+                    return RedirectToAction("AlertLogin", "Login");
                 }
                 else
                 {
@@ -92,7 +93,8 @@ namespace Portal.Controllers
                     };
                     this.db.UserProfiles.Add(userProfile);
                     this.db.SaveChanges();
-                    return RedirectToAction("Index", "Login");
+
+                    return RedirectToAction("AlertLogin", "Login");
                 }
             }
 

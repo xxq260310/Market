@@ -21,7 +21,7 @@ namespace Portal.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.OrderDetail);
+            var orders = db.Orders;
             return View(orders.ToList());
         }
 
@@ -45,7 +45,6 @@ namespace Portal.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.OrderId = new SelectList(db.OrderDetails, "OrderId", "OrderId");
             return View();
         }
 
@@ -64,7 +63,6 @@ namespace Portal.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderId = new SelectList(db.OrderDetails, "OrderId", "OrderId", order.OrderId);
             return View(order);
         }
 
@@ -76,12 +74,13 @@ namespace Portal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Order order = db.Orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderId = new SelectList(db.OrderDetails, "OrderId", "OrderId", order.OrderId);
+
             return View(order);
         }
 
@@ -99,7 +98,7 @@ namespace Portal.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderId = new SelectList(db.OrderDetails, "OrderId", "OrderId", order.OrderId);
+
             return View(order);
         }
 
