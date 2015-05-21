@@ -75,38 +75,38 @@ namespace Portal.Controllers
         [HttpPost]
         public JsonResult GetNotCheckedTotalCost(Cost cost)
         {
-            int a = 0;
-            int b = 0;
+            double a = 0;
+            double b = 0;
             if (!string.IsNullOrEmpty(cost.CurrentPrice))
             {
-                a = Convert.ToInt32(cost.CurrentPrice);
+                a = Convert.ToDouble(cost.CurrentPrice);
             }
 
             if (!string.IsNullOrEmpty(cost.LastPrice))
             {
-                b = Convert.ToInt32(cost.LastPrice);
+                b = Convert.ToDouble(cost.LastPrice);
             }
 
-            int Cost = b - a;
+            double Cost = b - a;
             return this.Json(Cost);
         }
 
         [HttpPost]
         public JsonResult GetCheckedTotalCost(Cost cost)
         {
-            int a = 0;
-            int b = 0;
+            double a = 0;
+            double b = 0;
             if (!string.IsNullOrEmpty(cost.CurrentPrice))
             {
-                a = Convert.ToInt32(cost.CurrentPrice);
+                a = Convert.ToDouble(cost.CurrentPrice);
             }
 
             if (!string.IsNullOrEmpty(cost.LastPrice))
             {
-                b = Convert.ToInt32(cost.LastPrice);
+                b = Convert.ToDouble(cost.LastPrice);
             }
 
-            int Cost = a + b;
+            double Cost = a + b;
             return this.Json(Cost);
         }
 

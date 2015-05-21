@@ -37,12 +37,12 @@ namespace Portal.Controllers
             var commodities = from item in this.db.Commodities
                               select item;
 
-            if (subCategory != null)
+            if (!string.IsNullOrEmpty(subCategory))
             {
                 commodities = commodities.Where(s => s.SubCategory.CategoryName == subCategory);
             }
 
-            if (searchString != null || id.HasValue)
+            if (!string.IsNullOrEmpty(searchString) || id.HasValue)
             {
                 commodities = commodities.Where(s => s.Description.Contains(searchString) || s.CommodityId == id);
             }
