@@ -17,6 +17,11 @@ namespace Portal.Controllers
     {
         private MarketContext db = new MarketContext();
 
+        public ActionResult Home()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "Administrator")]
         // GET: Orders
         public ActionResult Index()
@@ -138,9 +143,5 @@ namespace Portal.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Home()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

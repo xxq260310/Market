@@ -63,12 +63,14 @@
             });
     })
 
-    function reverseChecked() {
-        var checked = $("input[type='checkbox'][name='singlecommodity']");
-        $(checked).each(function () {
-            $(this).prop("checked", !($(this).prop("checked")));
-        })
-    }
+    $(function () {
+        $("#AllChecked").click(function () {
+            var checked = $("input[type='checkbox'][name='singlecommodity']");
+            $(checked).each(function () {
+                $(this).prop("checked", !($(this).prop("checked")));
+            })
+        });
+    });
 
     $(function () {
         var length = $("table").find("tr").length - 1;
@@ -88,31 +90,21 @@
     });
 
     $(function () {
-        var dialog = $("#dialog-confirm").dialog({
-            autoOpen: false,
-            width:350,
-            height: 140,
-            modal: true,
-            buttons: {
-                "Delete": function () {
-                    $(this).submit();
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
+        $("#commodityTable").on("click", ".favorite", function () {
+            $.getJSON("/Favorites/AddCommodityInFavorite", { id: $("#favorite").parent().children().eq(3).val() }, function (data) {
+                if (data == 0) {
+                    alert("您已经收藏过此商品啦！");
                 }
-            }
-        });
-
-        $("#delete").button().on("click", function () {
-            dialog.dialog("open");
+                else {
+                    alert("收藏成功!");
+                }
+            });
         });
     });
-</script>
-<input type="hidden" name="TotalCost" id="TotalCost" />
 
-<div id="dialog-confirm" title="Delete ShoppingTrolley?">
-    @*<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure?</p>*@
-</div>
+</script>
+
+<input type="hidden" name="TotalCost" id="TotalCost" />
 
 <div class="header">
     <div class="header_top">
@@ -209,10 +201,10 @@
                     <span>亲，您的购物车信息如下:</span>
                 </div>
                 <div class="top_grid2">
-                    <table class="table">
+                    <table class="table" id="commodityTable">
                         <tr>
                             <th>
-                                <input type="checkbox" onclick="reverseChecked()" id="AllChecked" name="AllChecked" />
+                                <input type="checkbox" id="AllChecked" name="AllChecked" />
                             </th>
                             <th>
                                 商品信息:
@@ -251,7 +243,7 @@
                                 </td>
                                 <td>
                                     <a id="delete" href="@Url.Action("SingleDelete", "ShoppingTrolleys", new { id = p.CommodityId })">删除</a><br />
-                                    <a href="@Url.Action("AddCommodityInFavorite", "Favorites" , new { id = p.CommodityId })">加入收藏夹</a>
+                                    <a id="favorite" style="cursor:pointer;" class="favorite" name="favorite">加入收藏夹</a> <input type="hidden" id="CommodityId" name="CommodityId" value="@p.CommodityId"/>
                                 </td>
                             </tr>
                         }

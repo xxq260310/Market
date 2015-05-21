@@ -392,6 +392,7 @@
     <Content Include="Views\Commodities\TemporaryAdminImage.cshtml" />
     <Content Include="Views\ShoppingTrolleys\SingleDelete.cshtml" />
     <Content Include="Views\Login\AlertLogin.cshtml" />
+    <Content Include="Views\Orders\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
